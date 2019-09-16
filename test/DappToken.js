@@ -29,4 +29,16 @@ contract('DappToken', function(accounts){
       assert.equal(adminBalance.toNumber(), 1000000, 'it allocates the initial supply to the admin account');
     });
   });
-});
+
+  });
+
+
+
+
+
+
+
+
+
+
+})
