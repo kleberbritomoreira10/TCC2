@@ -54,16 +54,6 @@ contract('DappToken', function(accounts){
     }).then(function(balance){
       assert.equal(balance.toNumber(), 750000, 'deducts the amount from the sending account');
     });
-
   });
-
-
-
-
-
-
-
-
-
 
 })
