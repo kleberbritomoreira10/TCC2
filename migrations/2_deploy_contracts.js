@@ -1,5 +1,5 @@
-var DappToken = artifacts.require("./DappToken.sol");
+var FGACoin = artifacts.require("./FGACoin.sol");
 
 module.exports = function(deployer) {
-  deployer.deploy(DappToken, 1000000);
+  deployer.deploy(FGACoin, 1000000);
 };
