@@ -1,13 +1,13 @@
  pragma solidity ^0.4.18;
 
-contract DappToken {
+contract FGACoin {
 
     //Name
-    string public name = "DApp Token";
+    string public name = "FGA Coin";
     //Symbol
-    string public symbol = "DAPP";
+    string public symbol = "FGACOIN";
     //Standard
-    string public standard = "DApp Token v1.0";
+    string public standard = "FGA Coin v1.0";
 
     uint256 public totalSupply;
 
@@ -33,7 +33,7 @@ contract DappToken {
     // Constructor
     // Set the total number of tokens
     // Read the total number of tokens
-    function DappToken(uint256 _initialSupply) public {
+    function FGACoin(uint256 _initialSupply) public {
       balanceOf[msg.sender] = _initialSupply;
       totalSupply = _initialSupply;
       //allocate the initial supply
