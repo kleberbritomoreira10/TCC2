@@ -59,7 +59,7 @@ contract DappToken {
     function approve(address _spender, uint256 _value) public returns (bool success){
       // Allowance
       allowance[msg.sender][_spender] = _value;
-      
+
       // Approval event
       Approval(msg.sender, _spender, _value);
 
@@ -67,5 +67,24 @@ contract DappToken {
     }
 
     // transferForm
+    function transferFrom(address _from, address _to, uint256 _value) public returns(bool success){
+      //Require _from has enough tokens
+      require(_value <= balanceOf[_from]);
 
+      //Require allowance is big enough
+      require(_value <= allowance[_from][msg.sender]);
+
+      //Change the balance
+      balanceOf[_from] -= _value;
+      balanceOf[_to] += _value;
+
+      //Update the allowance
+      allowance[_from][msg.sender] -= _value;
+
+      //Transfer event
+      Transfer(_from, _to, _value);
+
+      //return a boolean
+      return true;
+    }
 }
