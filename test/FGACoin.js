@@ -3,30 +3,30 @@ var FGACoin = artifacts.require("./FGACoin.sol");
 contract('FGACoin', function(accounts){
   var tokenInstance;
 
-  it('initializes the contract with the correct values', function(){
+  it('Inicializando o contrato inteligente com os valores corretos', function(){
     return FGACoin.deployed().then(function(instance){
       tokenInstance = instance;
       return tokenInstance.name();
     }).then(function(name){
-      assert.equal(name, 'FGA Coin', 'has the correct name');
+      assert.equal(name, 'FGA Coin', 'Tem o nome correto');
       return tokenInstance.symbol();
     }).then(function(symbol){
-      assert.equal(symbol, 'FGACOIN', 'has the correct symbol');
+      assert.equal(symbol, 'FGACOIN', 'Tem o símbolo correto');
       return tokenInstance.standard();
     }).then(function(standard){
-      assert.equal(standard, 'FGA Coin v1.0', 'has the correct standard');
+      assert.equal(standard, 'FGA Coin v1.0', 'Tem o padrão correto');
     });
   });
 
-  it('Allocate the initial supply upon deployment', function(){
+  it('Alocando o fornecimento inicial em implantação', function(){
     return FGACoin.deployed().then(function(instance){
       tokenInstance = instance;
       return tokenInstance.totalSupply();
     }).then(function(totalSupply){
-      assert.equal(totalSupply.toNumber(), 1000000, 'sets the total supply to 1,000,000');
+      assert.equal(totalSupply.toNumber(), 1000000, 'Estabelecido o fornecimento total de 1,000,000');
       return tokenInstance.balanceOf(accounts[0]);
     }).then(function(adminBalance){
-      assert.equal(adminBalance.toNumber(), 1000000, 'it allocates the initial supply to the admin account');
+      assert.equal(adminBalance.toNumber(), 1000000, 'Alocando o fornecimento inicial para a conta do administrador');
     });
   });
 
