@@ -18,7 +18,7 @@ contract('FGACoin', function(accounts){
     });
   });
 
-  it('Alocando o fornecimento inicial em implantação', function(){
+  it('Alocando o fornecimento inicial de criptomoedas designadas', function(){
     return FGACoin.deployed().then(function(instance){
       tokenInstance = instance;
       return tokenInstance.totalSupply();
@@ -30,33 +30,33 @@ contract('FGACoin', function(accounts){
     });
   });
 
-  it('transfers token ownership', function(){
+  it('Transfere a propriedade do token', function(){
     return FGACoin.deployed().then(function(instance){
         tokenInstance = instance;
-        //test 'require' statement first by transferring something larger than the sender's balance
+        //Testando transferir algo maior do que o saldo do remetente
       return tokenInstance.transfer.call(accounts[1], 99999999999999999999999);
     }).then(assert.fail).catch(function(error){
-      assert(error.message.indexOf('revert') >= 0, 'error message must contain revert');
+      assert(error.message.indexOf('revert') >= 0, 'mensagem de erro deve conter revert');
       return tokenInstance.transfer.call(accounts[1], 250000, {from: accounts[0] });
     }).then(function(success){
-      assert.equal(success, true, 'it returns true');
+      assert.equal(success, true, 'retorna true');
       return tokenInstance.transfer(accounts[1], 250000, {from: accounts[0]});
     }).then(function(receipt){
-      assert.equal(receipt.logs.length, 1, 'triggers one event');
-      assert.equal(receipt.logs[0].event, 'Transfer', 'should be the "Transfer" event');
-      assert.equal(receipt.logs[0].args._from, accounts[0], 'logs the account the tokens are transferred from');
-      assert.equal(receipt.logs[0].args._to, accounts[1], 'logs the account the tokens are transferred to');
-      assert.equal(receipt.logs[0].args._value, 250000, 'logs the transfer amount');
+      assert.equal(receipt.logs.length, 1, 'dispara um evento');
+      assert.equal(receipt.logs[0].event, 'Transfer', 'deveria ser o evento "Transfer"');
+      assert.equal(receipt.logs[0].args._from, accounts[0], 'registra a conta na qual os tokens são transferidos');
+      assert.equal(receipt.logs[0].args._to, accounts[1], 'registra a conta para a qual os tokens são transferidos');
+      assert.equal(receipt.logs[0].args._value, 250000, 'registra o valor da transferência');
       return tokenInstance.balanceOf(accounts[1]);
     }).then(function(balance){
-      assert.equal(balance.toNumber(), 250000, 'adds the amount to the receiving account');
+      assert.equal(balance.toNumber(), 250000, 'adiciona o valor à conta de recebimento');
       return tokenInstance.balanceOf(accounts[0]);
     }).then(function(balance){
-      assert.equal(balance.toNumber(), 750000, 'deducts the amount from the sending account');
+      assert.equal(balance.toNumber(), 750000, 'deduz o valor da conta de envio');
     });
   });
 
-  it('approves tokens for delegated transfer', function(){
+  it('aprova tokens para a transferência solicitada', function(){
     return FGACoin.deployed().then(function(instance){
       tokenInstance = instance;
       return tokenInstance.approve.call(accounts[1], 100);
@@ -64,56 +64,56 @@ contract('FGACoin', function(accounts){
       assert.equal(success, true, 'it returns true');
       return tokenInstance.approve(accounts[1], 100, {from: accounts[0]});
     }).then(function(receipt){
-      assert.equal(receipt.logs.length, 1, 'triggers one event');
-      assert.equal(receipt.logs[0].event, 'Approval', 'should be the "Approval" event');
-      assert.equal(receipt.logs[0].args._owner, accounts[0], 'logs the account the tokens are authorized by');
-      assert.equal(receipt.logs[0].args._spender, accounts[1], 'logs the account the tokens are authorized to');
-      assert.equal(receipt.logs[0].args._value, 100, 'logs the transfer amount');
+      assert.equal(receipt.logs.length, 1, 'Dispara um evento');
+      assert.equal(receipt.logs[0].event, 'Approval', 'Deveria ser o evento "Approval" ');
+      assert.equal(receipt.logs[0].args._owner, accounts[0], 'registra a conta em que os tokens são autorizados ');
+      assert.equal(receipt.logs[0].args._spender, accounts[1], 'registra a conta na qual os tokens estão autorizados');
+      assert.equal(receipt.logs[0].args._value, 100, 'registra o valor da transferência');
       return tokenInstance.allowance(accounts[0], accounts[1]);
     }).then(function(allowance){
-      assert.equal(allowance.toNumber(), 100, 'stores the allowance for delegated transfer');
+      assert.equal(allowance.toNumber(), 100, 'armazenada o allowance para a transferência solicitada');
     });
   });
 
-  it('handles delegated token transfers', function(){
+  it('Lida com as transferências de token solicitadas', function(){
     return FGACoin.deployed().then(function(instance){
       tokenInstance = instance;
       fromAccount = accounts[2];
       toAccount = accounts[3];
       spendingAccount = accounts[4];
-      //Transfer some tokens to FromAccount
+      //Transfere alguns tokens para FromAccount
       return tokenInstance.transfer(fromAccount, 100, { from: accounts[0] });
     }).then(function(receipt){
-      //Approve spendingAccount to spend 10 tokens from fromAccount
+      //Aprova spendingAccount para gastar 10 tokens de fromAccount
       return tokenInstance.approve(spendingAccount, 10, {from: fromAccount });
     }).then(function(receipt){
-      //Try transfering something larger than the sender's balance
+      //Tenta transferir algo maior do que o saldo do remetente
       return tokenInstance.transferFrom(fromAccount, toAccount, 9999, { from: spendingAccount });
     }).then(assert.fail).catch(function(error){
-      assert(error.message.indexOf('revert') >= 0, 'cannot transfer value larger than balance');
-      //Try transfering something larger than the approved amount
+      assert(error.message.indexOf('revert') >= 0, 'Não pode transferir valor maior que o saldo');
+      //Tenta transferir algo maior que o valor aprovado
       return tokenInstance.transferFrom(fromAccount, toAccount, 20, {from: spendingAccount});
     }).then(assert.fail).catch(function(error){
-      assert(error.message.indexOf('revert') >= 0, 'cannot transfer value larger than approved amount');
+      assert(error.message.indexOf('revert') >= 0, 'não é possível transferir valor maior do que o valor aprovado');
       return tokenInstance.transferFrom.call(fromAccount, toAccount, 10, {from: spendingAccount });
     }).then(function(success){
       assert.equal(success, true);
       return tokenInstance.transferFrom(fromAccount, toAccount, 10, {from: spendingAccount});
     }).then(function(receipt){
-      assert.equal(receipt.logs.length, 1, 'triggers one event');
-      assert.equal(receipt.logs[0].event, 'Transfer', 'should be the "Transfer" event');
-      assert.equal(receipt.logs[0].args._from, fromAccount, 'logs the account the tokens are transferred from');
-      assert.equal(receipt.logs[0].args._to, toAccount, 'logs the account the tokens are transferred to');
-      assert.equal(receipt.logs[0].args._value, 10, 'logs the transfer amount');
+      assert.equal(receipt.logs.length, 1, 'Dispara um evento');
+      assert.equal(receipt.logs[0].event, 'Transfer', 'Deveria ser o evento "Transfer" ');
+      assert.equal(receipt.logs[0].args._from, fromAccount, 'registra a conta na qual os tokens são transferidos');
+      assert.equal(receipt.logs[0].args._to, toAccount, 'registra a conta para a qual os tokens são transferidos');
+      assert.equal(receipt.logs[0].args._value, 10, 'registra o valor da transferência');
       return tokenInstance.balanceOf(fromAccount);
     }).then(function(balance){
-      assert.equal(balance.toNumber(), 90, 'deducts the amount from the sending account');
+      assert.equal(balance.toNumber(), 90, 'subtrai o valor da conta de envio');
       return tokenInstance.balanceOf(toAccount);
     }).then(function(balance){
-      assert.equal(balance.toNumber(), 10, 'adds the amount from the receiving account');
+      assert.equal(balance.toNumber(), 10, 'adiciona o valor da conta de recebimento');
       return tokenInstance.allowance(fromAccount, spendingAccount);
     }).then(function(allowance){
-      assert.equal(allowance.toNumber(), 0, 'deducts the amount from the allowance');
+      assert.equal(allowance.toNumber(), 0, 'subtrai a quantidade do allowance');
     });
   });
 
