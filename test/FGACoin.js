@@ -1,3 +1,4 @@
+//Cria um objeto referente ao contrato FGACoin
 var FGACoin = artifacts.require("./FGACoin.sol");
 
 contract('FGACoin', function(accounts){

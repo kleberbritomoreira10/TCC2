@@ -21,7 +21,7 @@ contract FGACoin {
       uint256 _value
     );
 
-    // Será disparado esse evento para verificar se aprova uma transação
+    // Será disparado esse evento ao aprovar uma transação
     event Approval(
       address indexed _owner,
       address indexed _spender,
@@ -43,7 +43,7 @@ contract FGACoin {
       totalSupply = _initialSupply;
     }
 
-    // Função para emitir um desejo de negociação
+    // Função para emitir um desejo de transferência
     function transfer(address _to, uint256 _value) public returns (bool success){
       //Dispara uma exceção se a conta não tiver saldo suficiente
       require(balanceOf[msg.sender] >= _value);

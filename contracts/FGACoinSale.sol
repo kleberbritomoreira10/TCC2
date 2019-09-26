@@ -1,19 +1,26 @@
+//Declaração da Versão do solidity
 pragma solidity ^0.4.18;
 
+//Importação para poder ter acesso ao contrato FGACoin
 import "./FGACoin.sol";
 
+//Criação do Contrato que representará a venda de criptomoedas
 contract FGACoinSale {
   address admin;
   FGACoin public tokenContract;
   uint256 public tokenPrice;
   uint256 public tokensSold;
 
+  //Dispara o evento para vender a criptomoeda
   event Sell(address _buyer, uint256 _amount);
 
+  // Criação do Construtor
+  // Ao rodar a migração, faz a leitura do address e do preço do token no arquivo 2_deploy_contracts.js e
+  // inicializa o sistema, designando esse valor para o administrador em [msg.sender]
   function FGACoinSale(FGACoin _tokenContract, uint256 _tokenPrice) public {
     // Atribui um administrador
     admin = msg.sender;
-    // Token contract
+    // Mantem a rastreabilidade do token Contract
     tokenContract = _tokenContract;
     // Preço do Token
     tokenPrice = _tokenPrice;
@@ -30,7 +37,7 @@ contract FGACoinSale {
     require(msg.value == multiply(_numberOfTokens, tokenPrice));
     //Requer que o contrato tenha tokens suficientes
     require(tokenContract.balanceOf(this) >= _numberOfTokens);
-    //Requer que a transferência seja um sucesso
+    //Requer que a transferência seja um sucesso, retornando true em caso afirmativo
     require(tokenContract.transfer(msg.sender, _numberOfTokens));
     //Mantem a rastreabilidade de TokensSol
     tokensSold += _numberOfTokens;
