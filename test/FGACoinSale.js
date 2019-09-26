@@ -1,4 +1,6 @@
+//Cria um objeto referente ao contrato FGACoinSale
 var FGACoinSale = artifacts.require('./FGACoinSale.sol');
+//Cria um objeto referente ao contrato FGACoin
 var FGACoin = artifacts.require('./FGACoin.sol');
 
 contract('FGACoinSale', function(accounts) {
@@ -7,10 +9,10 @@ contract('FGACoinSale', function(accounts) {
   var admin = accounts[0];
   var buyer = accounts[1];
   var tokenPrice = 1000000000000000000; // em wei (menor subdivisão/unidade do ether)
-  var tokensAvailable = 750000;
+  var tokensAvailable = 750000;         // Definindo a quantidade máxima total de criptomoedas que podem ser vendidas
   var numberOfTokens;
 
-  it('Inicializando o contrato com os valores corretos', function(){
+  it('Inicializando o contrato FGACoinSale com os valores corretos', function(){
       return FGACoinSale.deployed().then(function(instance){
         //Mantem a rastreabilidade da Instância
         tokenSaleInstance = instance;
@@ -28,13 +30,13 @@ contract('FGACoinSale', function(accounts) {
 
   it('Facilitando a compra de tokens', function(){
     return FGACoin.deployed().then(function(instance){
-      // Pega a instância do token
+      // Pega a instância do token FGACoin
       tokenInstance = instance;
       return FGACoinSale.deployed();
     }).then(function(instance){
-      // Pega a instância do token sale
+      // Pega a instância do token FGACoinSale
       tokenSaleInstance = instance;
-      // Fornece 75% de todos os tokens para a venda de tokens
+      // Fornece 75% dos tokens total para a venda
       return tokenInstance.transfer(tokenSaleInstance.address, tokensAvailable, {from: admin})
     }).then(function(receipt){
       numberOfTokens = 10;
