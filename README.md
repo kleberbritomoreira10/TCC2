@@ -30,7 +30,7 @@ computador. Você pode instalar o ganache baixando diretamente no site: <https:/
 
 ## Metamask
 A próxima e última dependência é o Metamask que é uma extensão para o google chrome, dessa forma você deve estar
-utilizando o google chrome, assim essa extensão estará disponível em: <https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en>
+utilizando o google chrome, assim essa extensão estará disponível em: <https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en>.
 Para usar a blockchain, precisamos nos conectar a ela. Assim teremos que instalar uma extensão especial do navegador
 para usar a Blockchain Ethereum. É aí que entra o Metamask. Poderemos assim nos conectar ao nosso blockchain Ethereum
 local com nossa conta pessoal e interagir com nosso contrato inteligente.
