@@ -1,5 +1,6 @@
 pragma solidity ^0.4.18;
 
+//As migrações são arquivos Javascript que ajudam a implantar contratos na rede Ethereum. 
 contract Migrations {
   address public owner;
   uint public last_completed_migration;
