@@ -63,6 +63,8 @@ contract('FGACoinSale', function(accounts) {
     }).then(assert.fail).catch(function(error) {
       assert(error.message.indexOf('revert') >= 0, 'não pode comprar mais tokens do que o disponível');
     });
+
   });
+
 
 })

@@ -45,4 +45,14 @@ contract FGACoinSale {
     Sell(msg.sender, _numberOfTokens);
   }
 
+  // Finalizando Token FGACoinSale
+  function endSale() public {
+    //Requer o administrador
+    require(msg.sender == admin);
+    //Transfere os tokens remanescentes para o administrador
+    require(tokenContract.transfer(admin, tokenContract.balanceOf(this)));
+    //Destrói o Contrato
+    selfdestruct(admin);
+  }
+
 }
