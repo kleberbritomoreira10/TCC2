@@ -66,5 +66,29 @@ contract('FGACoinSale', function(accounts) {
 
   });
 
+  it('Finalizando a venda de token', function(){
+    return FGACoin.deployed().then(function(instance){
+      // Pega a instância do token FGACoin
+      tokenInstance = instance;
+      return FGACoinSale.deployed();
+    }).then(function(instance){
+      // Pega a instância do token FGACoinSale
+      tokenSaleInstance = instance;
+      // Tenta encerrar a venda de outra conta que não seja o administrador
+      return tokenSaleInstance.endSale({from: buyer});
+    }).then(assert.fail).catch(function(error){
+      assert(error.message.indexOf('revert' >= 0, 'deve ser o administrador para encerrar a venda'));
+      //Finaliza a venda como administrador
+      return tokenSaleInstance.endSale({from: admin});
+    }).then(function(receipt){
+      return tokenInstance.balanceOf(admin);
+    }).then(function(balance){
+      assert.equal(balance.toNumber(), 999990, 'retornar todos os tokens não vendidos para o administrador');
+      //Verifica que o token price foi resetado quando selfdestruct foi chamado
+      return tokenSaleInstance.tokenPrice();
+    }).then(function(price){
+      assert.equal(price.toNumber(), 0, 'token price foi resetado');
+    });
+  });
 
 })
