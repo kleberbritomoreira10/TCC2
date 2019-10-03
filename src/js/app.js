@@ -26,18 +26,18 @@ App = {
   },
 
   initContracts: function() {
-    $.getJSON("DappTokenSale.json", function(dappTokenSale) {
-      App.contracts.DappTokenSale = TruffleContract(dappTokenSale);
-      App.contracts.DappTokenSale.setProvider(App.web3Provider);
-      App.contracts.DappTokenSale.deployed().then(function(dappTokenSale) {
-        console.log("Dapp Token Sale Address:", dappTokenSale.address);
+    $.getJSON("FGACoinSale.json", function(FGACoinSale) {
+      App.contracts.FGACoinSale = TruffleContract(FGACoinSale);
+      App.contracts.FGACoinSale.setProvider(App.web3Provider);
+      App.contracts.FGACoinSale.deployed().then(function(FGACoinSale) {
+        console.log("FGACOIN Sale Address:", FGACoinSale.address);
       });
     }).done(function() {
-      $.getJSON("DappToken.json", function(dappToken) {
-        App.contracts.DappToken = TruffleContract(dappToken);
-        App.contracts.DappToken.setProvider(App.web3Provider);
-        App.contracts.DappToken.deployed().then(function(dappToken) {
-          console.log("Dapp Token Address:", dappToken.address);
+      $.getJSON("FGACoin.json", function(FGACoin) {
+        App.contracts.FGACoin = TruffleContract(FGACoin);
+        App.contracts.FGACoin.setProvider(App.web3Provider);
+        App.contracts.FGACoin.deployed().then(function(FGACoin) {
+          console.log("FGACoin Address:", FGACoin.address);
         });
 
         App.listenForEvents();
@@ -48,7 +48,7 @@ App = {
 
   // Listen for events emitted from the contract
   listenForEvents: function() {
-    App.contracts.DappTokenSale.deployed().then(function(instance) {
+    App.contracts.FGACoinSale.deployed().then(function(instance) {
       instance.Sell({}, {
         fromBlock: 0,
         toBlock: 'latest',
@@ -75,18 +75,18 @@ App = {
     web3.eth.getCoinbase(function(err, account) {
       if(err === null) {
         App.account = account;
-        $('#accountAddress').html("Your Account: " + account);
+        $('#accountAddress').html("Sua Conta: " + account);
       }
     })
 
     // Load token sale contract
-    App.contracts.DappTokenSale.deployed().then(function(instance) {
-      dappTokenSaleInstance = instance;
-      return dappTokenSaleInstance.tokenPrice();
+    App.contracts.FGACoinSale.deployed().then(function(instance) {
+      FGACoinSaleInstance = instance;
+      return FGACoinSaleInstance.tokenPrice();
     }).then(function(tokenPrice) {
       App.tokenPrice = tokenPrice;
       $('.token-price').html(web3.fromWei(App.tokenPrice, "ether").toNumber());
-      return dappTokenSaleInstance.tokensSold();
+      return FGACoinSaleInstance.tokensSold();
     }).then(function(tokensSold) {
       App.tokensSold = tokensSold.toNumber();
       $('.tokens-sold').html(App.tokensSold);
@@ -96,9 +96,9 @@ App = {
       $('#progress').css('width', progressPercent + '%');
 
       // Load token contract
-      App.contracts.DappToken.deployed().then(function(instance) {
-        dappTokenInstance = instance;
-        return dappTokenInstance.balanceOf(App.account);
+      App.contracts.FGACoin.deployed().then(function(instance) {
+        FGACoinInstance = instance;
+        return FGACoinInstance.balanceOf(App.account);
       }).then(function(balance) {
         $('.dapp-balance').html(balance.toNumber());
         App.loading = false;
@@ -112,7 +112,7 @@ App = {
     $('#content').hide();
     $('#loader').show();
     var numberOfTokens = $('#numberOfTokens').val();
-    App.contracts.DappTokenSale.deployed().then(function(instance) {
+    App.contracts.FGACoinSale.deployed().then(function(instance) {
       return instance.buyTokens(numberOfTokens, {
         from: App.account,
         value: numberOfTokens * App.tokenPrice,
