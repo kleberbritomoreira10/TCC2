@@ -7,7 +7,8 @@ var FGACoinSale = artifacts.require("./FGACoinSale.sol");
 module.exports = function(deployer) {
   deployer.deploy(FGACoin, 1000000).then(function(){
     //Preço do token é 0.001 Ether
-    var tokenPrice = 1000000000000000000;
+    var tokenPrice = 1000000000000000;
+    //1000000000000000000
     return deployer.deploy(FGACoinSale, FGACoin.address, tokenPrice);
   });
 };

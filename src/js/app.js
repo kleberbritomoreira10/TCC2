@@ -100,7 +100,7 @@ App = {
         FGACoinInstance = instance;
         return FGACoinInstance.balanceOf(App.account);
       }).then(function(balance) {
-        $('.dapp-balance').html(balance.toNumber());
+        $('.fgacoin-balance').html(balance.toNumber());
         App.loading = false;
         loader.hide();
         content.show();
