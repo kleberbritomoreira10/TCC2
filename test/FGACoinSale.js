@@ -8,7 +8,7 @@ contract('FGACoinSale', function(accounts) {
   var tokenInstance;
   var admin = accounts[0];
   var buyer = accounts[1];
-  var tokenPrice = 1000000000000000000; // em wei (menor subdivisão/unidade do ether)
+  var tokenPrice = 1000000000000000; // em wei (menor subdivisão/unidade do ether)
   var tokensAvailable = 750000;         // Definindo a quantidade máxima total de criptomoedas que podem ser vendidas
   var numberOfTokens;
 

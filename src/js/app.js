@@ -14,11 +14,11 @@ App = {
 
   initWeb3: function() {
     if (typeof web3 !== 'undefined') {
-      // If a web3 instance is already provided by Meta Mask.
+      // Se uma instância web3 já for fornecida pelo Meta Mask.
       App.web3Provider = web3.currentProvider;
       web3 = new Web3(web3.currentProvider);
     } else {
-      // Specify default instance if no web3 instance provided
+      // Especifique a instância padrão se nenhuma instância da web3 for fornecida
       App.web3Provider = new Web3.providers.HttpProvider('http://localhost:7545');
       web3 = new Web3(App.web3Provider);
     }
@@ -46,7 +46,7 @@ App = {
     })
   },
 
-  // Listen for events emitted from the contract
+  // Ouvir eventos emitidos pelo contrato
   listenForEvents: function() {
     App.contracts.FGACoinSale.deployed().then(function(instance) {
       instance.Sell({}, {
@@ -71,7 +71,7 @@ App = {
     loader.show();
     content.hide();
 
-    // Load account data
+    // Carregar dados da conta
     web3.eth.getCoinbase(function(err, account) {
       if(err === null) {
         App.account = account;
@@ -79,7 +79,7 @@ App = {
       }
     })
 
-    // Load token sale contract
+    // Contrato de venda de Tokens
     App.contracts.FGACoinSale.deployed().then(function(instance) {
       FGACoinSaleInstance = instance;
       return FGACoinSaleInstance.tokenPrice();
@@ -95,7 +95,7 @@ App = {
       var progressPercent = (Math.ceil(App.tokensSold) / App.tokensAvailable) * 100;
       $('#progress').css('width', progressPercent + '%');
 
-      // Load token contract
+      // Carregar token contrato
       App.contracts.FGACoin.deployed().then(function(instance) {
         FGACoinInstance = instance;
         return FGACoinInstance.balanceOf(App.account);
@@ -116,12 +116,12 @@ App = {
       return instance.buyTokens(numberOfTokens, {
         from: App.account,
         value: numberOfTokens * App.tokenPrice,
-        gas: 500000 // Gas limit
+        gas: 500000 // Gas limite
       });
     }).then(function(result) {
       console.log("Tokens bought...")
-      $('form').trigger('reset') // reset number of tokens in form
-      // Wait for Sell event
+      $('form').trigger('reset') // resetar número de tokens em formulário
+      // Esperar pelo evento Sell
     });
   }
 }
